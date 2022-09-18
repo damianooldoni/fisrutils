@@ -151,7 +151,7 @@ get_pop_evol <- function(df,
 
   # Check colours
   lifestage_values <- unique(df$lifestage)
-  n_lifestage_values <- length(unique(lifestage_values))
+  n_lifestage_values <- length(lifestage_values)
   n_colours <- length(colours)
   if (n_colours > n_lifestage_values) {
     warning(glue::glue(
@@ -229,10 +229,10 @@ get_pop_evol <- function(df,
   # Create basic line plot
   p <- ggplot2::ggplot(
     data = pop_evol,
-    mapping = ggplot2::aes(x = year,
-                           y = n,
-                           group = lifestage,
-                           color = lifestage
+    mapping = ggplot2::aes(x = .data$year,
+                           y = .data$n,
+                           group = .data$lifestage,
+                           color = .data$lifestage
                            )
     ) +
     ggplot2::geom_line()
@@ -240,7 +240,7 @@ get_pop_evol <- function(df,
   # Add label
   p <- p +
     ggrepel::geom_label_repel(
-      ggplot2::aes(label = label),
+      ggplot2::aes(label = .data$label),
       nudge_x = 1,
       na.rm = TRUE
     )
