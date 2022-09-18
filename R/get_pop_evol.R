@@ -60,11 +60,11 @@ get_pop_evol <- function(df,
   check_value(locality, localities, "locality", null_allowed = FALSE)
 
   # Check n is a number
-  assertthat::assert_that(is.numeric(n),
+  assertthat::assert_that(all(is.numeric(n)),
                           msg = "n must be a number."
   )
   # Check n is positive
-  assertthat::assert_that(n >= 0,
+  assertthat::assert_that(all(n >= 0),
                           msg = "n must be a positive number."
   )
   # Check n is an integer
@@ -143,18 +143,101 @@ get_pop_evol <- function(df,
   if (n_colours > 1 & n_colours < n_lifestage_values) {
     warning(glue::glue(
       "Number of colours ({n_colours}) less than ",
-      "number of lifestage values ({n_lifestage_values})."
+      "number of lifestage values ({n_lifestage_values}). ",
+      "Colours are recycled."
       )
     )
+    colours <- rep(colours, length = n_lifestage_values)
   }
 
   if (n_colours == 1) {
     message(glue::glue("Same color for all life stage classes: {colours}."))
+    colours <- rep(colours, n_lifestage_values)
   }
 
-  # Create population matrix
+  # Initialize population matrix
+  pop_matrix <-matrix(nrow = n_lifestage_values,
+                      ncol = n_lifestage_values)
 
+  # Add reproduction values
+  pop_matrix[1,] <- df$reproduction
 
-  p <- NULL
+  # Add survivals
+  for (i in 2:n_lifestage_values) {
+    pop_matrix[i, i-1] <- df$survival[i-1]
+  }
+  pop_matrix[n_lifestage_values, n_lifestage_values] <- df$survival[n_lifestage_values]
+  # Replace NAs with 0
+  pop_matrix[is.na(pop_matrix)] <- 0
+
+  # Get population stage vectors
+  populations <- popbio::pop.projection(
+    A = pop_matrix,
+    n = rep(n, n_lifestage_values),
+    iterations = years
+  )
+
+  # Get lambda value (population growth rate)
+  lambda_value <- populations$lambda
+
+  pop_evol <- populations$stage.vectors
+  rownames(pop_evol) <- lifestage_values
+  pop_evol <- dplyr::as_tibble(pop_evol, rownames = "lifestage")
+  pop_evol$lifestage <- factor(pop_evol$lifestage,
+                               levels = lifestage_values,
+                               ordered = TRUE
+  )
+
+  # Pivot longer: years from cols to rows
+  pop_evol <- tidyr::pivot_longer(
+    data = pop_evol,
+    cols = !dplyr::starts_with("lifestage"),
+    names_to = "year",
+    values_to = "n"
+  )
+
+  # Set year as factor
+  pop_evol$year <- factor(pop_evol$year, levels = 0:(years-1), ordered = TRUE)
+
+  # Add labels for plot
+  pop_evol$label <- NA
+  pop_evol$label[pop_evol$year == (years - 1)] <- lifestage_values
+
+  # Create basic line plot
+  p <- ggplot2::ggplot(
+    data = pop_evol,
+    mapping = ggplot2::aes(x = year,
+                           y = n,
+                           group = lifestage,
+                           color = lifestage
+                           )
+    ) +
+    ggplot2::geom_line()
+
+  # Add label
+  p <- p +
+    ggrepel::geom_label_repel(
+      ggplot2::aes(label = label),
+      nudge_x = 1,
+      na.rm = TRUE
+    )
+
+  # Map colors, remove legend
+  p <- p +
+    ggplot2::scale_color_manual(
+      values = colours,
+      limits = lifestage_values
+    )
+
+  # Add title
+  p <- p +
+    ggplot2::theme(legend.position = "none") +
+    ggplot2::ggtitle(
+      label = glue::glue("species: {sp} - locality : {loc}"),
+      subtitle = glue::glue("population growth rate: {lambda_rounded}",
+                            lambda_rounded = round(lambda_value, digits = 3)
+      )
+    )
+
   return(p)
 }

@@ -112,7 +112,7 @@ test_that("Check warning and return NULL if no data left", {
     "No data left for the combination: deer (species) and Flanders (locality).",
     fixed = TRUE
   )
-  # to be changed!!
+  # return NULL if nothing to calculate
   testthat::expect_null(out)
 })
 
@@ -148,8 +148,8 @@ test_that("Check warning when n_colours > n_lifestage", {
     ),
     fixed = TRUE
   )
-  # to be changed!!
-  testthat::expect_null(out)
+  # A ggplot2 plot is returned
+  testthat::expect_s3_class(a, c("gg", "ggplot"))
 })
 
 test_that("Check warning when n_colours < n_lifestage", {
@@ -162,11 +162,12 @@ test_that("Check warning when n_colours < n_lifestage", {
       colours = c("#3a5c8e", "#3a5c8e")
     ),
     paste("Number of colours (2) less than",
-          "number of lifestage values (4)."
+          "number of lifestage values (4).",
+          "Colours are recycled."
     ),
     fixed = TRUE
   )
-  # to be changed!!
-  testthat::expect_null(out)
+  # A ggplot2 plot is returned
+  testthat::expect_s3_class(a, c("gg", "ggplot"))
 })
 
