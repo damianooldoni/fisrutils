@@ -16,7 +16,8 @@ Imports:
     ggplot2,
     ggrepel,
     glue,
-    popbio
+    popbio,
+    tidyr
 Suggests:
     covr,
     knitr,
