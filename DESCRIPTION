@@ -11,9 +11,16 @@ BugReports: https://github.com/inbo/fisrutils/issues
 Depends:
     R (>= 3.4.0)
 Imports:
-    assertthat
+    assertthat,
+    ggplot2,
+    popbio
+Suggests:
+    covr,
+    testthat (>= 3.0.0)
 LazyData: true
+LazyDataCompression: bzip2
 Encoding: UTF-8
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.1
+Config/testthat/edition: 3
