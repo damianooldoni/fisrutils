@@ -126,6 +126,35 @@ get_pop_evol <- function(df,
     )
   )
 
+  # Check colours
+  lifestage_values <- unique(df$lifestage)
+  n_lifestage_values <- length(unique(lifestage_values))
+  n_colours <- length(colours)
+  if (n_colours > n_lifestage_values) {
+    warning(glue::glue(
+      "Number of colours ({n_colours}) greater than ",
+      "number of lifestage values ({n_lifestage_values}). ",
+      "Only the first {n_lifestage_values} colours are used."
+      )
+    )
+    colours <- colours[1:n_lifestage_values]
+  }
+
+  if (n_colours > 1 & n_colours < n_lifestage_values) {
+    warning(glue::glue(
+      "Number of colours ({n_colours}) less than ",
+      "number of lifestage values ({n_lifestage_values})."
+      )
+    )
+  }
+
+  if (n_colours == 1) {
+    message(glue::glue("Same color for all life stage classes: {colours}."))
+  }
+
+  # Create population matrix
+
+
   p <- NULL
   return(p)
 }

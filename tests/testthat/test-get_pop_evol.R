@@ -111,7 +111,8 @@ test_that("Check warning and return NULL if no data left", {
                  years = 5),
     "No data left for the combination: deer (species) and Flanders (locality).",
     fixed = TRUE
-    )
+  )
+  # to be changed!!
   testthat::expect_null(out)
 })
 
@@ -128,3 +129,44 @@ test_that("Check no duplicates in lifestage", {
     )
   )
 })
+
+test_that("Check warning when n_colours > n_lifestage", {
+  # n_colours = 6 > n_lifestage = 4
+  testthat::expect_warning(out <-
+    get_pop_evol(df =  pop_dyn,
+                 species = "deer",
+                 locality = "Wallonia",
+                 colours = c("#3a5c8e",
+                             "#3a5c8e",
+                             "#fbc3c4",
+                             "#fbc3c4",
+                             "#683238",
+                             "#683238")),
+    paste("Number of colours (6) greater than",
+          "number of lifestage values (4).",
+          "Only the first 4 colours are used."
+    ),
+    fixed = TRUE
+  )
+  # to be changed!!
+  testthat::expect_null(out)
+})
+
+test_that("Check warning when n_colours < n_lifestage", {
+  # n_colours = 2 < n_lifestage = 4
+  testthat::expect_warning(
+    out <- get_pop_evol(
+      df =  pop_dyn,
+      species = "deer",
+      locality = "Wallonia",
+      colours = c("#3a5c8e", "#3a5c8e")
+    ),
+    paste("Number of colours (2) less than",
+          "number of lifestage values (4)."
+    ),
+    fixed = TRUE
+  )
+  # to be changed!!
+  testthat::expect_null(out)
+})
+
