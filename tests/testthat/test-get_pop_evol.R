@@ -136,12 +136,12 @@ test_that("Check warning when n_colours > n_lifestage", {
     get_pop_evol(df =  pop_dyn,
                  species = "deer",
                  locality = "Wallonia",
-                 colours = c("#3a5c8e",
-                             "#3a5c8e",
-                             "#fbc3c4",
-                             "#fbc3c4",
-                             "#683238",
-                             "#683238")),
+                 colours = c("#3a5c1e",
+                             "#3a5c2f",
+                             "#fac3c1",
+                             "#ffc3c4",
+                             "#61ff30",
+                             "#083a39")),
     paste("Number of colours (6) greater than",
           "number of lifestage values (4).",
           "Only the first 4 colours are used."
@@ -159,7 +159,7 @@ test_that("Check warning when n_colours < n_lifestage", {
       df =  pop_dyn,
       species = "deer",
       locality = "Wallonia",
-      colours = c("#3a5c8e", "#3a5c8e")
+      colours = c("#3a5c8e", "#fa51e")
     ),
     paste("Number of colours (2) less than",
           "number of lifestage values (4).",
@@ -171,3 +171,26 @@ test_that("Check warning when n_colours < n_lifestage", {
   testthat::expect_s3_class(a, c("gg", "ggplot"))
 })
 
+test_that("Check message and output plot for one color", {
+  # n_colours = 1
+  testthat::expect_message(
+    out <- get_pop_evol(
+      df =  pop_dyn,
+      species = "deer",
+      locality = "Wallonia",
+      colours = c("#3a5c8e")
+    ),
+    paste("Number of colours (2) less than",
+          "number of lifestage values (4).",
+          "Colours are recycled."
+    ),
+    fixed = TRUE
+  )
+  # A ggplot2 plot is returned
+  testthat::expect_s3_class(out, c("gg", "ggplot"))
+})
+
+test_that("Check returned plot", {
+  # A ggplot2 plot is returned
+  testthat::expect_s3_class(out, c("gg", "ggplot"))
+})
