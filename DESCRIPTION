@@ -13,10 +13,11 @@ Depends:
 Imports:
     assertthat,
     ggplot2,
+    glue,
     popbio
 Suggests:
     covr,
-    knitr
+    knitr,
     testthat (>= 3.0.0)
 LazyData: true
 LazyDataCompression: bzip2

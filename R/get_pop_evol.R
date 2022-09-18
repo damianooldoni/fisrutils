@@ -4,12 +4,15 @@
 #' population dynamic parameters for different locations and species.
 #'
 #' @param df A dataframe with population dynamic parameters. It must contain (at
-#'   least) the following columns: 1. `locality` 2. `species`: species
-#'   identifier. Typically a vernacular or scientific name. 3. `lifestage` 4.
-#'   `reproduction`: probability to reproduce within a year. Real number equal
-#'   or above 0. 5. `survival`: probability to survive within a year. Real
-#'   number between 0 (the animal dies for sure) and 1 (the animal survives for
-#'   sure).
+#'   least) the following columns:
+#'   1. `locality`: locations.
+#'   2. `species`: species identifier. Typically a vernacular or scientific
+#'   name.
+#'   3. `lifestage`
+#'   4. `reproduction`: probability to reproduce within a year. Real number
+#'   equal or above 0.
+#'   5. `survival`: probability to survive within a year. Real number between 0
+#'   (the animal dies for sure) and 1 (the animal survives for sure).
 #' @param species Character with the species name. One of the species in column
 #'   `species` of `df`.
 #' @param locality Character with the locality name. One of the localities in
@@ -33,7 +36,20 @@ get_pop_evol <- function(df,
                          n = 100,
                          years  = 10,
                          colours = "#000000") {
+  # check dataframe with population dynamic parameters
   assertthat::assert_that(is.data.frame(df))
+  names_cols <- c("locality", "species", "lifestage", "reproduction", "survival")
+  assertthat::assert_that(
+    all(names_cols %in% names(df)),
+    msg = glue::glue(
+      "One or more required columns missing in df. Required columns: {names_cols_collapse}.",
+      names_cols_collapse = paste(names_cols, collapse = ", ")
+    )
+  )
+
+  # check species is one of the values in column df$species
+  spp <- unique(df$species)
+  check_value(species, spp, "species", null_allowed = FALSE)
   p <- NULL
   return(p)
 }

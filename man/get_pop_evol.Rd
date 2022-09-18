@@ -7,15 +7,17 @@
 get_pop_evol(df, species, locality, n = 100, years = 10, colours = "#000000")
 }
 \arguments{
-\item{df}{A dataframe with population dynamic parameters. It must contain (at least) the following columns:
+\item{df}{A dataframe with population dynamic parameters. It must contain (at
+least) the following columns:
 \enumerate{
-\item \code{locality}
-\item \code{species}: vernacular name.
+\item \code{locality}: locations.
+\item \code{species}: species identifier. Typically a vernacular or scientific
+name.
 \item \code{lifestage}
 \item \code{reproduction}: probability to reproduce within a year. Real number
 equal or above 0.
-\item \code{survival}: probability to survive within a year. Real number
-between 0 (the animal dies for sure) and 1 (the animal survives for sure).
+\item \code{survival}: probability to survive within a year. Real number between 0
+(the animal dies for sure) and 1 (the animal survives for sure).
 }}
 
 \item{species}{Character with the species name. One of the species in column
