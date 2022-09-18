@@ -5,7 +5,7 @@ Authors@R:
     person("Damiano", "Oldoni", , "damiano.oldoni@inbo.be", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-3445-7562"))
 Description: Collection of typical small functionalities useful across projects of FIS team.
-License: `use_mit_license()`
+License: MIT + file LICENSE
 URL: https://github.com/damianooldoni/fisrutils, https://damianooldoni.github.io/fisrutils
 BugReports: https://github.com/inbo/fisrutils/issues
 Depends:
