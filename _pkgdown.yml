@@ -1,0 +1,19 @@
+url: ~
+
+template:
+  bootstrap: 5
+
+navbar:
+  bg: dark
+
+authors:
+  Damiano Oldoni:
+    href: https://twitter.com/damianozingaro
+
+reference:
+- title: Calculate population dynamics
+  contents:
+  - has_concept("population dynamics")
+- title: Sample data
+  contents:
+  - has_concept("sample data")
