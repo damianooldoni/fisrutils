@@ -20,9 +20,9 @@
 #' @param n Number of individuals per  life stage class. Default: 100
 #'   individuals for each class.
 #' @param years Number of years for the prediction. Default: 10 years.
-#' @param colours: vector with hex colour codes, one per life stage. If one
+#' @param colours Vector with hex colour codes, one per life stage. If one
 #'   value is passed, all life stage categories have same color in the returned
-#'   line plot. Default: black for all life stages.
+#'   line plot. Default: black (`"#000000"`) for all life stages.
 #' @return A ggplot2 line plot with years on the x-axis, number of animals on
 #'   the y-axis and the lifestage as colour and label. The lambda value is shown
 #'   in the subtitle.
@@ -50,6 +50,10 @@ get_pop_evol <- function(df,
   # check species is one of the values in column df$species
   spp <- unique(df$species)
   check_value(species, spp, "species", null_allowed = FALSE)
+
+  # check locality is one of the values in column df$locality
+  localities <- unique(df$locality)
+  check_value(locality, localities, "locality", null_allowed = FALSE)
   p <- NULL
   return(p)
 }

@@ -31,9 +31,9 @@ individuals for each class.}
 
 \item{years}{Number of years for the prediction. Default: 10 years.}
 
-\item{colours:}{vector with hex colour codes, one per life stage. If one
+\item{colours}{Vector with hex colour codes, one per life stage. If one
 value is passed, all life stage categories have same color in the returned
-line plot. Default: black for all life stages.}
+line plot. Default: black (\code{"#000000"}) for all life stages.}
 }
 \value{
 A ggplot2 line plot with years on the x-axis, number of animals on
