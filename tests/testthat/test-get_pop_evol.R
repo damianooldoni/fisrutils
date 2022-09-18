@@ -180,17 +180,8 @@ test_that("Check message and output plot for one color", {
       locality = "Wallonia",
       colours = c("#3a5c8e")
     ),
-    paste("Number of colours (2) less than",
-          "number of lifestage values (4).",
-          "Colours are recycled."
-    ),
-    fixed = TRUE
+    "Same color for all life stage classes: #3a5c8e."
   )
-  # A ggplot2 plot is returned
-  testthat::expect_s3_class(out, c("gg", "ggplot"))
-})
-
-test_that("Check returned plot", {
   # A ggplot2 plot is returned
   testthat::expect_s3_class(out, c("gg", "ggplot"))
 })
