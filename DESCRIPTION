@@ -1,0 +1,19 @@
+Package: fisrutils
+Title:  Collection of useful R utilities of the FIS team.
+Version: 0.0.0.9000
+Authors@R: 
+    person("Damiano", "Oldoni", , "damiano.oldoni@inbo.be", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0003-3445-7562"))
+Description: Collection of typical small functionalities useful across projects of FIS team.
+License: `use_mit_license()`
+URL: https://github.com/damianooldoni/fisrutils, https://damianooldoni.github.io/fisrutils
+BugReports: https://github.com/inbo/fisrutils/issues
+Depends:
+    R (>= 3.4.0)
+Imports:
+    assertthat
+LazyData: true
+Encoding: UTF-8
+VignetteBuilder: knitr
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.1
