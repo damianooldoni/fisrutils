@@ -54,6 +54,35 @@ get_pop_evol <- function(df,
   # check locality is one of the values in column df$locality
   localities <- unique(df$locality)
   check_value(locality, localities, "locality", null_allowed = FALSE)
+
+  # check n is a number
+  assertthat::assert_that(is.numeric(n),
+                          msg = "n must be a number."
+  )
+  # check n is positive
+  assertthat::assert_that(n >= 0,
+                          msg = "n must be a positive number."
+  )
+  # check n is an integer
+  assertthat::assert_that(
+    all(n == as.integer(n)),
+    msg = paste("Number of individuals per life stage category, n,",
+                "must be an integer. No decimal numbers are allowed.")
+  )
+
+  # check years
+  assertthat::assert_that(is.numeric(years),
+                          msg = "years must be a number."
+  )
+  # check years is positive
+  assertthat::assert_that(years >= 0,
+                          msg = "years must be a positive number."
+  )
+  # check years is an integer
+  assertthat::assert_that(
+    all(years == as.integer(years)),
+    msg = paste("years must be an integer. No decimal numbers are allowed.")
+  )
   p <- NULL
   return(p)
 }

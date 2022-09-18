@@ -45,3 +45,60 @@ test_that("locality is one of the localities in df", {
     )
   )
 })
+
+test_that("check n is a positive integer", {
+  # character
+  testthat::expect_error(
+    get_pop_evol(df=  pop_dyn,
+                 species = "deer",
+                 locality = "Flanders",
+                 n = "5"),
+    "n must be a number."
+  )
+  # negative number
+  testthat::expect_error(
+    get_pop_evol(df=  pop_dyn,
+                 species = "deer",
+                 locality = "Flanders",
+                 n = -5),
+    "n must be a positive number."
+  )
+  # n is a decimal number
+  testthat::expect_error(
+    get_pop_evol(df=  pop_dyn,
+                 species = "deer",
+                 locality = "Flanders",
+                 n = 5.2),
+    paste("Number of individuals per life stage category, n,",
+          "must be an integer. No decimal numbers are allowed."
+    )
+  )
+})
+
+test_that("check years is a positive integer", {
+  # character
+  testthat::expect_error(
+    get_pop_evol(df=  pop_dyn,
+                 species = "deer",
+                 locality = "Flanders",
+                 years = "5"),
+    "years must be a number."
+  )
+  # negative number
+  testthat::expect_error(
+    get_pop_evol(df=  pop_dyn,
+                 species = "deer",
+                 locality = "Flanders",
+                 years = -5),
+    "years must be a positive number."
+  )
+  # years is a decimal number
+  testthat::expect_error(
+    get_pop_evol(df=  pop_dyn,
+                 species = "deer",
+                 locality = "Flanders",
+                 years = 5.2),
+    paste("years must be an integer. No decimal numbers are allowed."
+    )
+  )
+})
