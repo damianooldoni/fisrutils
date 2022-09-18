@@ -1,5 +1,7 @@
 #' Calculate and plot population evolution
 #'
+#' Function to calculate the evolution of a population given a dataframe with
+#' population dynamic parameters for different locations and species.
 #'
 #' @param df A dataframe with population dynamic parameters. It must contain (at least) the following columns:
 #' 1. `locality`
@@ -25,13 +27,13 @@
 #' @export
 #' @examples
 #' library(fisrutils)
-#' get_pop_evolution(pop_dyn, species = "wild boar", locality = "Flanders")
-get_pop_evolution <- function(df,
-                              species,
-                              locality,
-                              n = 100,
-                              years  = 10,
-                              colours = "#000000") {
+#' get_pop_evol(pop_dyn, species = "wild boar", locality = "Flanders")
+get_pop_evol <- function(df,
+                         species,
+                         locality,
+                         n = 100,
+                         years  = 10,
+                         colours = "#000000") {
   assertthat::assert_that(is.data.frame(df))
   p <- NULL
   return(p)
