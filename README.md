@@ -13,13 +13,13 @@ Install `fisrutils` from GitHub with:
 
 ```r
 # install.packages("devtools")
-devtools::install_github("inbo/inborutils")
+devtools::install_github("damianooldoni/fisrutils")
 ```
 
 When successful, load it as usual:
 
 ```r
-library(inborutils)
+library(fisrutils)
 ```
 
 ## Usage
