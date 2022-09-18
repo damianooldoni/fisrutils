@@ -210,6 +210,19 @@ test_that("Check scaling effect while changing n", {
   testthat::expect_equal(out100$data$n*2,out200$data$n)
 })
 
+test_that("Check number of years is equal to number of x values", {
+  # n = 20
+  out20 <- get_pop_evol(
+    df =  pop_dyn,
+    species = "deer",
+    locality = "Wallonia",
+    years = 20,
+    colours = c("#3a5c8e", "#abc123", "#fba000", "#888888")
+  )
+  # The df slot of the plot has 0 <= years < 20
+  testthat::expect_equal(unique(out20$data$year), factor(0:19, ordered = TRUE))
+})
+
 test_that("Check some output plot slots", {
   # 1 color
   out1 <- get_pop_evol(
