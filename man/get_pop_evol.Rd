@@ -38,7 +38,8 @@ line plot. Default: black (\code{"#000000"}) for all life stages.}
 \value{
 A ggplot2 line plot with years on the x-axis, number of animals on
 the y-axis and the lifestage as colour and label. The lambda value is shown
-in the subtitle.
+in the subtitle. If no data are left in \code{df} for the given combination
+\code{species}/\code{location}, \code{NULL} is returned.
 }
 \description{
 Function to calculate the evolution of a population given a dataframe with
@@ -48,3 +49,4 @@ population dynamic parameters for different locations and species.
 library(fisrutils)
 get_pop_evol(pop_dyn, species = "wild boar", locality = "Flanders")
 }
+\concept{population dynamics}

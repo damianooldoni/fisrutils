@@ -102,3 +102,29 @@ test_that("check years is a positive integer", {
     )
   )
 })
+
+test_that("Check warning and return NULL if no data left", {
+  testthat::expect_warning(out <-
+    get_pop_evol(df=  pop_dyn,
+                 species = "deer",
+                 locality = "Flanders",
+                 years = 5),
+    "No data left for the combination: deer (species) and Flanders (locality).",
+    fixed = TRUE
+    )
+  testthat::expect_null(out)
+})
+
+test_that("Check no duplicates in lifestage", {
+  pop_dyn_duplicates <- pop_dyn
+  pop_dyn_duplicates[8,3] <- "juvenile"
+  pop_dyn_duplicates[10,3] <- "adult"
+  testthat::expect_error(
+    get_pop_evol(df =  pop_dyn_duplicates,
+                 species = "deer",
+                 locality = "Wallonia"),
+    paste("Duplicate life stage values for species deer in location",
+          "Wallonia: adult, juvenile."
+    )
+  )
+})

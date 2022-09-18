@@ -25,8 +25,12 @@
 #'   line plot. Default: black (`"#000000"`) for all life stages.
 #' @return A ggplot2 line plot with years on the x-axis, number of animals on
 #'   the y-axis and the lifestage as colour and label. The lambda value is shown
-#'   in the subtitle.
+#'   in the subtitle. If no data are left in `df` for the given combination
+#'   `species`/`location`, `NULL` is returned.
+#'
 #' @export
+#' @importFrom dplyr %>% .data
+#' @family population dynamics
 #' @examples
 #' library(fisrutils)
 #' get_pop_evol(pop_dyn, species = "wild boar", locality = "Flanders")
@@ -36,7 +40,7 @@ get_pop_evol <- function(df,
                          n = 100,
                          years  = 10,
                          colours = "#000000") {
-  # check dataframe with population dynamic parameters
+  # Check dataframe with population dynamic parameters
   assertthat::assert_that(is.data.frame(df))
   names_cols <- c("locality", "species", "lifestage", "reproduction", "survival")
   assertthat::assert_that(
@@ -47,7 +51,7 @@ get_pop_evol <- function(df,
     )
   )
 
-  # check species is one of the values in column df$species
+  # Check species is one of the values in column df$species
   spp <- unique(df$species)
   check_value(species, spp, "species", null_allowed = FALSE)
 
@@ -55,34 +59,73 @@ get_pop_evol <- function(df,
   localities <- unique(df$locality)
   check_value(locality, localities, "locality", null_allowed = FALSE)
 
-  # check n is a number
+  # Check n is a number
   assertthat::assert_that(is.numeric(n),
                           msg = "n must be a number."
   )
-  # check n is positive
+  # Check n is positive
   assertthat::assert_that(n >= 0,
                           msg = "n must be a positive number."
   )
-  # check n is an integer
+  # Check n is an integer
   assertthat::assert_that(
     all(n == as.integer(n)),
     msg = paste("Number of individuals per life stage category, n,",
                 "must be an integer. No decimal numbers are allowed.")
   )
 
-  # check years
+  # Check years
   assertthat::assert_that(is.numeric(years),
                           msg = "years must be a number."
   )
-  # check years is positive
+  # Check years is positive
   assertthat::assert_that(years >= 0,
                           msg = "years must be a positive number."
   )
-  # check years is an integer
+  # Check years is an integer
   assertthat::assert_that(
     all(years == as.integer(years)),
     msg = paste("years must be an integer. No decimal numbers are allowed.")
   )
+
+  # Filter by species and locality
+  sp <- species
+  loc <- locality
+  df <-
+    df %>%
+    dplyr::filter(.data$species == sp & .data$locality == loc)
+
+  # Returns a warning if  there are no data left and return NULL
+  if (nrow(df) == 0) {
+    warning(glue::glue(
+      "No data left for the combination: {sp} (species) and {loc} (locality)."
+      )
+    )
+    return(NULL)
+  }
+
+  # Check lifestage values are unique for the selected species/location
+  duplicates_lifestage <-
+    df %>%
+    dplyr::group_by(.data$lifestage) %>%
+    dplyr::count() %>%
+    dplyr::filter(.data$n > 1) %>%
+    dplyr::distinct(.data$lifestage) %>%
+    dplyr::pull(.data$lifestage)
+
+  # Check life stage values are unique
+  assertthat::assert_that(
+    length(duplicates_lifestage) == 0,
+    msg = glue::glue(
+      "Duplicate life stage values for species {sp} in location {loc}:",
+      " {duplicates_lifestage_collapse}.",
+      duplicates_lifestage_collapse = paste(
+        duplicates_lifestage,
+        collapse = ", "
+      )
+    )
+  )
+
   p <- NULL
   return(p)
 }
