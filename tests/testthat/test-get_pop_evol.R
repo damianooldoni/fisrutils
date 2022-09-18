@@ -149,7 +149,7 @@ test_that("Check warning when n_colours > n_lifestage", {
     fixed = TRUE
   )
   # A ggplot2 plot is returned
-  testthat::expect_s3_class(a, c("gg", "ggplot"))
+  testthat::expect_s3_class(out, c("gg", "ggplot"))
 })
 
 test_that("Check warning when n_colours < n_lifestage", {
@@ -168,7 +168,7 @@ test_that("Check warning when n_colours < n_lifestage", {
     fixed = TRUE
   )
   # A ggplot2 plot is returned
-  testthat::expect_s3_class(a, c("gg", "ggplot"))
+  testthat::expect_s3_class(out, c("gg", "ggplot"))
 })
 
 test_that("Check message and output plot for one color", {
@@ -184,4 +184,73 @@ test_that("Check message and output plot for one color", {
   )
   # A ggplot2 plot is returned
   testthat::expect_s3_class(out, c("gg", "ggplot"))
+})
+
+test_that("Check scaling effect while changing n", {
+  # default: n = 100
+  out100 <- get_pop_evol(
+    df =  pop_dyn,
+    species = "deer",
+    locality = "Wallonia",
+    colours = c("#3a5c8e", "#abc123", "#fba000", "#888888")
+  )
+  # n = 200 (double)
+  out200 <- get_pop_evol(
+    df =  pop_dyn,
+    species = "deer",
+    locality = "Wallonia",
+    n = 200,
+    colours = c("#3a5c8e", "#abc123", "#fba000", "#888888")
+  )
+  # Same lifestage, year and label column
+  testthat::expect_equal(out100$data$lifestage,out200$data$lifestage)
+  testthat::expect_equal(out100$data$year,out200$data$year)
+  testthat::expect_equal(out100$data$label,out200$data$label)
+  # n is scaled (double)
+  testthat::expect_equal(out100$data$n*2,out200$data$n)
+})
+
+test_that("Check some output plot slots", {
+  # 1 color
+  out1 <- get_pop_evol(
+    df =  pop_dyn,
+    species = "deer",
+    locality = "Wallonia",
+    colours = c("#3a5c8e")
+  )
+  # 4 colors
+  out4 <- get_pop_evol(
+    df =  pop_dyn,
+    species = "deer",
+    locality = "Wallonia",
+    colours = c("#3a5c8e", "#005c01", "#f00c02", "#aaac00")
+  )
+  # A ggplot2 plot is returned
+  testthat::expect_s3_class(out1, c("gg", "ggplot"))
+  testthat::expect_s3_class(out4, c("gg", "ggplot"))
+
+  # The df in slot data is not dependent on colours
+  testthat::expect_equal(out1$data, out4$data)
+  # The df in slot data contains the right columns
+  testthat::expect_equal(names(out1$data), c("lifestage", "year", "n", "label"))
+
+  # The slot labels is a list with the right values
+  testthat::expect_true(is.list(out1$labels))
+  testthat::expect_equal(
+    out1$labels$title,
+    "species: deer - locality : Wallonia"
+  )
+  testthat::expect_equal(
+    out1$labels$subtitle,
+    "population growth rate: 0.971"
+  )
+  testthat::expect_equal(out1$labels$x, c("year"))
+  testthat::expect_equal(out1$labels$y, c("n"))
+  testthat::expect_equal(out1$labels$group,c("lifestage"))
+  testthat::expect_equal(out1$labels$colour,c("lifestage"))
+  testthat::expect_equal(out1$labels$label,c("label"))
+
+  # The plot has no legend
+  testthat::expect_true(is.list(out1$theme))
+  testthat::expect_equal(out1$theme$legend.position, c("none"))
 })
