@@ -36,10 +36,12 @@ value is passed, all life stage categories have same color in the returned
 line plot. Default: black (\code{"#000000"}) for all life stages.}
 }
 \value{
-A ggplot2 line plot with years on the x-axis, number of animals on
-the y-axis and the lifestage as colour and label. The lambda value is shown
-in the subtitle. If no data are left in \code{df} for the given combination
-\code{species}/\code{location}, \code{NULL} is returned.
+A ggplot2 line plot with years on the x-axis (\code{year}), number of
+animals on the y-axis (\code{n}) and the life stage classes as colour and label.
+The lambda value (population growth rate) is shown in the subtitle. If no
+data are left in \code{df} for the given combination \code{species}/\code{location},
+\code{NULL} is returned. Vector with colors is recycled if less colours than
+life stage classes are used.
 }
 \description{
 Function to calculate the evolution of a population given a dataframe with
@@ -47,6 +49,27 @@ population dynamic parameters for different locations and species.
 }
 \examples{
 library(fisrutils)
+# deafult color and initial number of individuals
 get_pop_evol(pop_dyn, species = "wild boar", locality = "Flanders")
+
+# Use a not default color
+get_pop_evol(
+  pop_dyn,
+  species = "deer",
+  locality = "Wallonia",
+  colour = "#005c01"
+)
+
+# Use as many colours as life stage classes
+colours_vec <- c("#3a5c8e", "#005c01", "#f00c02")
+get_pop_evol(
+  pop_dyn,
+  species = "wild boar",
+  locality = "Sweden",
+  colours = colours_vec
+)
+
+# Use a not default initial number of individuals
+get_pop_evol(pop_dyn, species = "deer", locality = "Wallonia", n = 40)
 }
 \concept{population dynamics}

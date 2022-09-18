@@ -23,17 +23,40 @@
 #' @param colours Vector with hex colour codes, one per life stage. If one
 #'   value is passed, all life stage categories have same color in the returned
 #'   line plot. Default: black (`"#000000"`) for all life stages.
-#' @return A ggplot2 line plot with years on the x-axis, number of animals on
-#'   the y-axis and the lifestage as colour and label. The lambda value is shown
-#'   in the subtitle. If no data are left in `df` for the given combination
-#'   `species`/`location`, `NULL` is returned.
+#' @return A ggplot2 line plot with years on the x-axis (`year`), number of
+#'   animals on the y-axis (`n`) and the life stage classes as colour and label.
+#'   The lambda value (population growth rate) is shown in the subtitle. If no
+#'   data are left in `df` for the given combination `species`/`location`,
+#'   `NULL` is returned. Vector with colors is recycled if less colours than
+#'   life stage classes are used.
 #'
 #' @export
 #' @importFrom dplyr %>% .data
 #' @family population dynamics
 #' @examples
 #' library(fisrutils)
+#' # deafult color and initial number of individuals
 #' get_pop_evol(pop_dyn, species = "wild boar", locality = "Flanders")
+#'
+#' # Use a not default color
+#' get_pop_evol(
+#'   pop_dyn,
+#'   species = "deer",
+#'   locality = "Wallonia",
+#'   colour = "#005c01"
+#' )
+#'
+#' # Use as many colours as life stage classes
+#' colours_vec <- c("#3a5c8e", "#005c01", "#f00c02")
+#' get_pop_evol(
+#'   pop_dyn,
+#'   species = "wild boar",
+#'   locality = "Sweden",
+#'   colours = colours_vec
+#' )
+#'
+#' # Use a not default initial number of individuals
+#' get_pop_evol(pop_dyn, species = "deer", locality = "Wallonia", n = 40)
 get_pop_evol <- function(df,
                          species,
                          locality,
