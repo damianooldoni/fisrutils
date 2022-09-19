@@ -78,7 +78,7 @@ test_that("check n is a positive integer", {
     get_pop_evol(df=  pop_dyn,
                  species = "deer",
                  locality = "Flanders",
-                 n = c(1,2,3),
+                 n = c(1,2,3)),
     paste("Number of individuals per life stage category, n,",
           "must be of length 1."
     )
