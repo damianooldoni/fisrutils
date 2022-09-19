@@ -96,6 +96,12 @@ get_pop_evol <- function(df,
     msg = paste("Number of individuals per life stage category, n,",
                 "must be an integer. No decimal numbers are allowed.")
   )
+  # Check n is of length 1
+  assertthat::assert_that(
+    length(n) == 1,
+    msg = paste("Number of individuals per life stage category, n,",
+                "must be of length 1.")
+  )
 
   # Check years
   assertthat::assert_that(is.numeric(years),
