@@ -73,6 +73,16 @@ test_that("check n is a positive integer", {
           "must be an integer. No decimal numbers are allowed."
     )
   )
+  # n is of length 1
+  testthat::expect_error(
+    get_pop_evol(df=  pop_dyn,
+                 species = "deer",
+                 locality = "Flanders",
+                 n = c(1,2,3),
+    paste("Number of individuals per life stage category, n,",
+          "must be of length 1."
+    )
+  )
 })
 
 test_that("check years is a positive integer", {
